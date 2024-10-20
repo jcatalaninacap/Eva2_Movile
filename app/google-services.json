@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "90447553075",
+    "firebase_url": "https://appmovilejmce-001-default-rtdb.firebaseio.com",
+    "project_id": "appmovilejmce-001",
+    "storage_bucket": "appmovilejmce-001.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:90447553075:android:0cb511db89fc2270d23946",
+        "android_client_info": {
+          "package_name": "com.example.myfirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "90447553075-p2rsop6nt0v75vql2eoo6cjiou1hkeh9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfuzYrNdhRGWuvBycNu7QmNko2xzkXzJI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "90447553075-p2rsop6nt0v75vql2eoo6cjiou1hkeh9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

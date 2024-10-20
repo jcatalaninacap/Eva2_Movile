@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PairDeviceActivity">
+
+    <TextView
+        android:id="@+id/tv_pair_device_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Emparejar Dispositivo"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"/>
+
+    <EditText
+        android:id="@+id/et_device_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Nombre del Dispositivo"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pair_device_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"/>
+
+    <EditText
+        android:id="@+id/et_device_key"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Clave Única del Dispositivo"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@+id/et_device_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/btn_pair_device"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Emparejar Dispositivo"
+        app:layout_constraintTop_toBottomOf="@+id/et_device_key"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"/>
+
+    <!-- Agregamos el botón para volver -->
+    <Button
+        android:id="@+id/btn_back_to_main"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Volver a Main"
+        app:layout_constraintTop_toBottomOf="@+id/et_device_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="505dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,9 @@
 package com.example.myfirebase;
 
+import static android.util.Log.println;
+
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
@@ -17,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DeviceLogsActivity extends AppCompatActivity {
@@ -38,6 +42,22 @@ public class DeviceLogsActivity extends AppCompatActivity {
 
         // Inicializar Firebase Database
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        String deviceId = "dispositivo1"; // ID del dispositivo
+        // Obtener la fecha actual
+        Date currentDate = new Date();
+        // Formatear la fecha como "yyyy-MM-dd"
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = dateFormat.format(currentDate);
+
+        LogEntry newLog = new LogEntry(formattedDate, "Log de ejemplo", "Acción realizada");
+
+        mDatabase.child("dispositivos").child(deviceId).child("logs").push().setValue(newLog)
+                .addOnSuccessListener(aVoid -> {
+                    // Log añadido correctamente
+                })
+                .addOnFailureListener(e -> {
+                    // Error al añadir log
+                });
 
         // Inicializar lista y adaptador
         logList = new ArrayList<>();
@@ -55,6 +75,8 @@ public class DeviceLogsActivity extends AppCompatActivity {
         // Cargar los registros desde Firebase
         cargarRegistros();
     }
+
+
 
     private void cargarRegistros() {
         mDatabase.child("dispositivos").child(deviceId).child("logs").addValueEventListener(new ValueEventListener() {

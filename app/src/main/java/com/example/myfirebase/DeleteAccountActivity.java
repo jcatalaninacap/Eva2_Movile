@@ -24,6 +24,9 @@ public class DeleteAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_account);
 
+        // Inicializa FirebaseAuth
+        firebaseAuth = FirebaseAuth.getInstance();
+
         etPassword = findViewById(R.id.et_password);
         btnDeleteAccount = findViewById(R.id.btn_delete_account);
         btnBackToMain = findViewById(R.id.btn_back_to_main);
@@ -39,7 +42,6 @@ public class DeleteAccountActivity extends AppCompatActivity {
             finish();
         });
     }
-
     private void deleteAccount() {
         String password = etPassword.getText().toString();
 
@@ -48,29 +50,42 @@ public class DeleteAccountActivity extends AppCompatActivity {
             return;
         }
 
+        if (firebaseAuth == null) {
+            Toast.makeText(this, "Error de autenticación", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
         if (user != null) {
-            AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), password);
-            user.reauthenticate(credential)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            user.delete()
-                                    .addOnCompleteListener(deleteTask -> {
-                                        if (deleteTask.isSuccessful()) {
-                                            Toast.makeText(this, "Cuenta eliminada", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(this, LoginActivity.class);
-                                            startActivity(intent);
-                                            finish();
-                                        } else {
-                                            Toast.makeText(this, "Error al eliminar la cuenta", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                        } else {
-                            Toast.makeText(this, "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            try {
+                AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), password);
+                user.reauthenticate(credential)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                user.delete()
+                                        .addOnCompleteListener(deleteTask -> {
+                                            if (deleteTask.isSuccessful()) {
+                                                Toast.makeText(this, "Cuenta eliminada", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(this, LoginActivity.class);
+                                                startActivity(intent);
+                                                finish();
+                                            } else {
+                                                Toast.makeText(this, "Error al eliminar la cuenta", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            } else {
+                                Toast.makeText(this, "Contraseña incorrecta", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            } catch (Exception e) {
+                Toast.makeText(this, "Ocurrió un error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(this, "Usuario no autenticado", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }
 

@@ -44,10 +44,13 @@ public class DeviceLogsActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         String deviceId = "dispositivo1"; // ID del dispositivo
         // Obtener la fecha actual
+
+
         Date currentDate = new Date();
         // Formatear la fecha como "yyyy-MM-dd"
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = dateFormat.format(currentDate);
+
 
         LogEntry newLog = new LogEntry(formattedDate, "Log de ejemplo", "Acción realizada");
 

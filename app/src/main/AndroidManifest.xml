@@ -2,6 +2,7 @@
     package="com.example.myfirebase">
 
     <application
+        android:enableOnBackInvokedCallback="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -22,12 +23,12 @@
 
         <!-- Otras actividades -->
         <activity android:name=".LoginActivity" />
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".RegistarUsuarioActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".PairDeviceActivity" />
-        <activity android:name=".DeleteAccountActivity" />
-        <activity android:name=".DeviceActivity"/>
-        <activity android:name=".DeviceLogsActivity" />
+        <activity android:name=".EmparejarDispositivosActivity" />
+        <activity android:name=".EliminarCuentaActivity" />
+        <activity android:name=".LogsImplement" />
+        <activity android:name=".BuscarUsuarioImplement" />
 
     </application>
 

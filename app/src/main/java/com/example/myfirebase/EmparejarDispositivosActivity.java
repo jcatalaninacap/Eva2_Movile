@@ -77,7 +77,7 @@ public class EmparejarDispositivosActivity extends AppCompatActivity {
         btnBackToMain = findViewById(R.id.btn_back_to_main); // Botón para regresar a MainActivity
 
         // Configura el botón de emparejar dispositivo para llamar al método pairDevice
-        btnPairDevice.setOnClickListener(v -> pairDevice());
+        btnPairDevice.setOnClickListener(v -> emparejarDispositivo());
 
         // Configura el botón para volver a MainActivity
         btnBackToMain.setOnClickListener(v -> {
@@ -90,7 +90,7 @@ public class EmparejarDispositivosActivity extends AppCompatActivity {
     }
 
     // Método para emparejar el dispositivo
-    private void pairDevice() {
+    private void emparejarDispositivo() {
         // Obtiene el nombre del dispositivo
         String deviceName = etDeviceName.getText().toString();
         // Obtiene la clave del dispositivo

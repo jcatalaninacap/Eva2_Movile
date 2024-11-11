@@ -1,39 +1,58 @@
 package com.example.myfirebase;
-
-import android.content.Intent; // Importa Intent para cambiar de actividad
-import android.os.Bundle; // Importa Bundle para pasar datos entre actividades
-import android.widget.Button; // Importa Button para manejar botones
-import android.widget.EditText; // Importa EditText para campos de texto
-import android.widget.Toast; // Importa Toast para mostrar mensajes en pantalla
-
-import androidx.appcompat.app.AppCompatActivity; // Importa AppCompatActivity como base para actividades
-
-import com.google.firebase.auth.FirebaseAuth; // Importa FirebaseAuth para autenticación
-import com.google.firebase.database.DatabaseReference; // Importa DatabaseReference para referenciar la base de datos de Firebase
-import com.google.firebase.database.FirebaseDatabase; // Importa FirebaseDatabase para acceder a la base de datos de Firebase
-
-import java.util.HashMap; // Importa HashMap para crear mapas de datos
-import java.util.Map; // Importa Map como interfaz para mapas de datos
+// Importa Intent para cambiar de actividad
+import android.content.Intent;
+// Importa Bundle para pasar datos entre actividades
+import android.os.Bundle;
+// Importa Button para manejar botones
+import android.widget.Button;
+// Importa EditText para campos de texto
+import android.widget.EditText;
+// Importa Toast para mostrar mensajes en pantalla
+import android.widget.Toast;
+// Importa AppCompatActivity como base para actividades
+import androidx.appcompat.app.AppCompatActivity;
+// Importa FirebaseAuth para autenticación
+import com.google.firebase.auth.FirebaseAuth;
+// Importa DatabaseReference para referenciar la base de datos de Firebase
+import com.google.firebase.database.DatabaseReference;
+// Importa FirebaseDatabase para acceder a la base de datos de Firebase
+import com.google.firebase.database.FirebaseDatabase;
+// Importa HashMap para crear mapas de datos
+import java.util.HashMap;
+// Importa Map como interfaz para mapas de datos
+import java.util.Map;
 
 public class RegistarUsuarioActivity extends AppCompatActivity {
 /*
-Explicación
-Esta clase define la actividad RegisterActivity, que permite a los usuarios crear una cuenta y guardar su información en Firebase:
+    Esta clase define la actividad RegisterActivity, que permite a los usuarios crear una cuenta y guardar su información en Firebase:
 
-Atributos etUsername, etRealName, etPassword, etEmail, btnRegister: Representan los campos de entrada y el botón de registro en la interfaz.
-Método onCreate: Configura la interfaz y enlaza los botones y campos de entrada. Define las acciones al hacer clic en el botón de registro.
-Método registerUser: Valida los datos de entrada y, si son correctos, crea un nuevo usuario en Firebase Authentication. Luego, guarda información adicional del usuario en la base de datos de Firebase.
-Esta actividad asegura que los datos del usuario estén almacenados tanto en la autenticación de Firebase como en la base de datos en tiempo real, lo cual permite acceder a su información posteriormente.
+    Atributos:
+     etUsername, etRealName, etPassword, etEmail, btnRegister: Representan los campos de entrada y el botón de registro en la interfaz.
+
+    Método onCreate:
+    Configura la interfaz y enlaza los botones y campos de entrada. Define las acciones al hacer clic en el botón de registro.
+
+    Método registerUser:
+    Valida los datos de entrada y, si son correctos, crea un nuevo usuario en Firebase Authentication. Luego, guarda información adicional del usuario en la base de datos de Firebase.
+
+    Esta actividad asegura que los datos del usuario estén almacenados tanto en la autenticación de
+    Firebase como en la base de datos en tiempo real, lo cual permite acceder a su información posteriormente.
  */
-    private EditText etUsername, etRealName, etPassword, etEmail; // Campos de texto para ingresar datos del usuario
-    private Button btnRegister; // Botón para registrarse
-    private FirebaseAuth mAuth; // Objeto FirebaseAuth para autenticación
-    private DatabaseReference mDatabase; // Referencia a la base de datos de Firebase
+// Campos de texto para ingresar datos del usuario
+    private EditText etUsername, etRealName, etPassword, etEmail;
+    // Botón para registrarse
+    private Button btnRegister;
+    // Objeto FirebaseAuth para autenticación
+    private FirebaseAuth mAuth;
+    // Referencia a la base de datos de Firebase
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState); // Llama al método de la clase padre para crear la actividad
-        setContentView(R.layout.activity_register); // Establece el diseño de la actividad
+        // Llama al método de la clase padre para crear la actividad
+        super.onCreate(savedInstanceState);
+        // Establece el diseño de la actividad
+        setContentView(R.layout.activity_register);
 
         // Inicializa FirebaseAuth y la referencia a FirebaseDatabase
         mAuth = FirebaseAuth.getInstance();
@@ -52,15 +71,19 @@ Esta actividad asegura que los datos del usuario estén almacenados tanto en la 
 
     // Método para registrar al usuario
     private void registerUser() {
-        String username = etUsername.getText().toString(); // Obtiene el nombre de usuario ingresado
-        String realName = etRealName.getText().toString(); // Obtiene el nombre real ingresado
-        String password = etPassword.getText().toString(); // Obtiene la contraseña ingresada
-        String email = etEmail.getText().toString(); // Obtiene el correo electrónico ingresado
+        // Obtiene el nombre de usuario ingresado
+        String username = etUsername.getText().toString();
+        // Obtiene el nombre real ingresado
+        String realName = etRealName.getText().toString();
+        // Obtiene la contraseña ingresada
+        String password = etPassword.getText().toString();
+        // Obtiene el correo electrónico ingresado
+        String email = etEmail.getText().toString();
 
         // Verifica que todos los campos estén completos
         if (username.isEmpty() || realName.isEmpty() || password.isEmpty() || email.isEmpty()) {
             Toast.makeText(this, "Por favor completa todos los campos", Toast.LENGTH_SHORT).show();
-            return; // Sale del método si algún campo está vacío
+            return;
         }
 
         // Verifica que la contraseña tenga al menos 6 caracteres
@@ -72,8 +95,10 @@ Esta actividad asegura que los datos del usuario estén almacenados tanto en la 
         // Crea el usuario en Firebase Authentication usando el correo y la contraseña
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) { // Si el registro es exitoso
-                        String userId = mAuth.getCurrentUser().getUid(); // Obtiene el ID del usuario actual
+                    // Si el registro es exitoso
+                    if (task.isSuccessful()) {
+                        // Obtiene el ID del usuario actual
+                        String userId = mAuth.getCurrentUser().getUid();
 
                         // Crea un mapa con los datos del usuario
                         Map<String, Object> user = new HashMap<>();
@@ -84,17 +109,24 @@ Esta actividad asegura que los datos del usuario estén almacenados tanto en la 
                         // Guarda los datos del usuario en la base de datos Firebase bajo el ID único
                         mDatabase.child("users").child(userId).setValue(user)
                                 .addOnCompleteListener(task1 -> {
-                                    if (task1.isSuccessful()) { // Si el guardado es exitoso
-                                        Toast.makeText(this, "Usuario registrado con éxito", Toast.LENGTH_SHORT).show(); // Mensaje de éxito
-                                        startActivity(new Intent(this, LoginActivity.class)); // Redirige a LoginActivity
-                                        finish(); // Finaliza RegisterActivity para evitar que el usuario regrese a ella
+                                    // Si el guardado es exitoso
+                                    if (task1.isSuccessful()) {
+                                        // Mensaje de éxito
+                                        Toast.makeText(this, "Usuario registrado con éxito", Toast.LENGTH_SHORT).show();
+                                        // Redirige a LoginActivity
+                                        startActivity(new Intent(this, LoginActivity.class));
+                                        // Finaliza RegisterActivity para evitar que el usuario regrese a ella
+                                        finish();
                                     } else {
-                                        Toast.makeText(this, "Error al guardar los datos", Toast.LENGTH_SHORT).show(); // Mensaje de error al guardar datos
+                                        // Mensaje de error al guardar datos
+                                        Toast.makeText(this, "Error al guardar los datos", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                     } else {
-                        String errorMessage = task.getException().getMessage(); // Obtiene el mensaje de error
-                        Toast.makeText(this, "Error en el registro: " + errorMessage, Toast.LENGTH_SHORT).show(); // Muestra el mensaje de error
+                        // Obtiene el mensaje de error
+                        String errorMessage = task.getException().getMessage();
+                        // Muestra el mensaje de error
+                        Toast.makeText(this, "Error en el registro: " + errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

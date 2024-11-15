@@ -1,44 +1,77 @@
 package com.example.myfirebase;
-
-import android.content.Intent; // Importa Intent para cambiar de actividad
-import android.os.Bundle; // Importa Bundle para pasar datos entre actividades
-import android.view.View; // Importa View para manejar vistas
-import android.widget.Button; // Importa Button para botones en la interfaz de usuario
-import android.widget.Toast; // Importa Toast para mostrar mensajes breves en pantalla
-
-import androidx.annotation.NonNull; // Importa la anotación NonNull para indicar que no debe ser nulo
-import androidx.appcompat.app.AppCompatActivity; // Importa AppCompatActivity como base para actividades
-import androidx.recyclerview.widget.LinearLayoutManager; // Importa LinearLayoutManager para organizar elementos en el RecyclerView
-import androidx.recyclerview.widget.RecyclerView; // Importa RecyclerView para mostrar listas de datos
-
-import com.google.firebase.database.DataSnapshot; // Importa DataSnapshot para manejar datos de Firebase
-import com.google.firebase.database.DatabaseError; // Importa DatabaseError para manejar errores de Firebase
-import com.google.firebase.database.DatabaseReference; // Importa DatabaseReference para referenciar la base de datos de Firebase
-import com.google.firebase.database.FirebaseDatabase; // Importa FirebaseDatabase para acceder a la base de datos de Firebase
-import com.google.firebase.database.ValueEventListener; // Importa ValueEventListener para escuchar cambios en la base de datos de Firebase
-
-import java.util.ArrayList; // Importa ArrayList para manejar listas
-import java.util.List; // Importa List como una interfaz para listas en Java
+// Importa Intent para cambiar de actividad
+import android.content.Intent;
+// Importa Bundle para pasar datos entre actividades
+import android.os.Bundle;
+// Importa View para manejar vistas
+import android.view.View;
+// Importa Button para botones en la interfaz de usuario
+import android.widget.Button;
+// Importa Toast para mostrar mensajes breves en pantalla
+import android.widget.Toast;
+// Importa la anotación NonNull para indicar que no debe ser nulo
+import androidx.annotation.NonNull;
+// Importa AppCompatActivity como base para actividades
+import androidx.appcompat.app.AppCompatActivity;
+// Importa LinearLayoutManager para organizar elementos en el RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager;
+// Importa RecyclerView para mostrar listas de datos
+import androidx.recyclerview.widget.RecyclerView;
+// Importa DataSnapshot para manejar datos de Firebase
+import com.google.firebase.database.DataSnapshot;
+// Importa DatabaseError para manejar errores de Firebase
+import com.google.firebase.database.DatabaseError;
+// Importa DatabaseReference para referenciar la base de datos de Firebase
+import com.google.firebase.database.DatabaseReference;
+// Importa FirebaseDatabase para acceder a la base de datos de Firebase
+import com.google.firebase.database.FirebaseDatabase;
+// Importa ValueEventListener para escuchar cambios en la base de datos de Firebase
+import com.google.firebase.database.ValueEventListener;
+// Importa ArrayList para manejar listas
+import java.util.ArrayList;
+// Importa List como una interfaz para listas en Java
+import java.util.List;
 
 public class BuscarUsuarioImplement extends AppCompatActivity {
 /*
-Explicación General
-RecyclerView: Utilizado para mostrar la lista de usuarios obtenidos desde Firebase en una lista vertical.
-Firebase Realtime Database: Se utiliza DatabaseReference para acceder al nodo users en la base de datos y escuchar los cambios en tiempo real.
-Botón "Volver": Permite al usuario regresar a la pantalla principal (MainActivity), finalizando la actividad actual.
-loadUsers(): Recupera los usuarios de la base de datos y los agrega a userList, luego notifica al adaptador para actualizar el RecyclerView.
-Este código permite listar y visualizar en tiempo real los datos de los usuarios almacenados en Firebase y navegar de vuelta a la actividad principal cuando el usuario presiona el botón "Volver".
+
+    RecyclerView:
+    Utilizado para mostrar la lista de usuarios obtenidos desde Firebase
+    en una lista vertical.
+
+    Firebase Realtime Database:
+    Se utiliza DatabaseReference para acceder al nodo users en la base de datos y escuchar
+     los cambios en tiempo real.
+
+    Botón "Volver":
+    Permite al usuario regresar a la pantalla principal (MainActivity),
+    finalizando la actividad actual.
+
+    loadUsers():
+    Recupera los usuarios de la base de datos y los agrega a userList, luego notifica al adaptador
+     para actualizar el RecyclerView.
+
+    Este código permite listar y visualizar en tiempo real los datos de los usuarios almacenados
+     en Firebase y navegar de vuelta a la actividad principal cuando el usuario presiona el botón "Volver".
+
  */
-    private RecyclerView recyclerViewUsers; // RecyclerView para mostrar la lista de usuarios
-    private BuscarUsuarioDAO buscarUsuarioDAO; // Adaptador para manejar la visualización de los usuarios
-    private List<BuscarUsuarioDTO> buscarUsuarioDTOList; // Lista que almacenará los datos de los usuarios
-    private DatabaseReference mDatabase; // Referencia a la base de datos de Firebase
-    private Button btn_Volver; // Botón para regresar a la actividad principal
+// RecyclerView para mostrar la lista de usuarios
+    private RecyclerView recyclerViewUsers;
+    // Adaptador para manejar la visualización de los usuarios
+    private BuscarUsuarioDAO buscarUsuarioDAO;
+    // Lista que almacenará los datos de los usuarios
+    private List<BuscarUsuarioDTO> buscarUsuarioDTOList;
+    // Referencia a la base de datos de Firebase
+    private DatabaseReference mDatabase;
+    // Botón para regresar a la actividad principal
+    private Button btn_Volver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState); // Llama al método de la clase padre para crear la actividad
-        setContentView(R.layout.activity_device_buscar); // Establece el diseño de la actividad
+        // Llama al método de la clase padre para crear la actividad
+        super.onCreate(savedInstanceState);
+        // Establece el diseño de la actividad
+        setContentView(R.layout.activity_device_buscar);
 
         // Inicializa el RecyclerView y le asigna un layout en forma de lista vertical
         recyclerViewUsers = findViewById(R.id.recyclerViewUsers);
@@ -51,15 +84,21 @@ Este código permite listar y visualizar en tiempo real los datos de los usuario
             public void onClick(View v) {
                 // Crea un Intent para volver a MainActivity
                 Intent intent = new Intent(BuscarUsuarioImplement.this, MainActivity.class);
-                startActivity(intent); // Inicia MainActivity
+                // Inicia MainActivity
+                startActivity(intent);
+
                 finish(); // Finaliza DeviceBuscarActivity para que no quede en el historial
             }
         });
 
         // Inicializa la lista de usuarios y el adaptador
-        buscarUsuarioDTOList = new ArrayList<>(); // Crea una lista vacía para almacenar usuarios
-        buscarUsuarioDAO = new BuscarUsuarioDAO(buscarUsuarioDTOList); // Asigna el adaptador con la lista de usuarios
-        recyclerViewUsers.setAdapter(buscarUsuarioDAO); // Asocia el adaptador al RecyclerView
+
+        // Crea una lista vacía para almacenar usuarios
+        buscarUsuarioDTOList = new ArrayList<>();
+        // Asigna el adaptador con la lista de usuarios
+        buscarUsuarioDAO = new BuscarUsuarioDAO(buscarUsuarioDTOList);
+        // Asocia el adaptador al RecyclerView
+        recyclerViewUsers.setAdapter(buscarUsuarioDAO);
 
         // Obtiene la referencia a la base de datos de Firebase en el nodo "users"
         mDatabase = FirebaseDatabase.getInstance().getReference("users");
@@ -74,13 +113,17 @@ Este código permite listar y visualizar en tiempo real los datos de los usuario
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                buscarUsuarioDTOList.clear(); // Limpia la lista antes de llenarla con nuevos datos
+                // Limpia la lista antes de llenarla con nuevos datos
+                buscarUsuarioDTOList.clear();
                 // Recorre todos los hijos de "users" en la base de datos
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    BuscarUsuarioDTO BuscarUsuarioDTO = snapshot.getValue(BuscarUsuarioDTO.class); // Convierte cada entrada a un objeto User
-                    buscarUsuarioDTOList.add(BuscarUsuarioDTO); // Agrega el usuario a la lista
+                    // Convierte cada entrada a un objeto User
+                    BuscarUsuarioDTO BuscarUsuarioDTO = snapshot.getValue(BuscarUsuarioDTO.class);
+                    // Agrega el usuario a la lista
+                    buscarUsuarioDTOList.add(BuscarUsuarioDTO);
                 }
-                buscarUsuarioDAO.notifyDataSetChanged(); // Notifica al adaptador de los cambios para actualizar la visualización
+                // Notifica al adaptador de los cambios para actualizar la visualización
+                buscarUsuarioDAO.notifyDataSetChanged();
             }
 
             @Override
